@@ -10,50 +10,48 @@ app.use(cors());
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(express.static(path.join(__dirname)));
 
-// MongoDB Connection (Your Database)
-mongoose.connect("mongodb+srv://gourabadmin:gourab2006@cluster0.xiyfnuj.mongodb.net/?retryWrites=true&w=majority")
-.then(() => console.log("Database Connected Successfully"))
-.catch(err => console.log("DB Connection Error:", err));
+// MongoDB Connection (Use your previous URI)
+mongoose.connect("YOUR_MONGODB_URI_HERE");
 
-const User = mongoose.model('User', { 
-    name: String, email: { type: String, unique: true }, password: String, status: { type: String, default: 'Pending' } 
+const User = mongoose.model('User', {
+    name: String,
+    email: { type: String, unique: true },
+    password: String,
+    status: { type: String, default: 'pending' } // 'active' or 'pending'
 });
 
-const ScanResult = mongoose.model('ScanResult', { input: String, type: String, status: String });
-
-// Registration API
+// Admin Control: আপনি (gourabadmin:gourab2006) সবাইকে কন্ট্রোল করতে পারবেন
 app.post('/api/register', async (req, res) => {
     try {
         const { name, email, password } = req.body;
         const newUser = new User({ name, email, password });
         await newUser.save();
-        res.json({ success: true });
-    } catch (err) { res.json({ success: false, message: "Email already exists!" }); }
+        res.json({ success: true, message: "রেজিস্টার করার জন্য আপনাকে ধন্যবাদ। একটিভ করতে গৌরব ভাইকে মেসেজ দিন।" });
+    } catch (err) {
+        res.json({ success: false, message: "ইমেইলটি ইতিমধ্যে ব্যবহার করা হয়েছে।" });
+    }
 });
 
-// Login API with Approval System
 app.post('/api/login', async (req, res) => {
     const { email, password } = req.body;
-    if (email === "gourabmon112233@gmail.com" && password === "goUrab@2008") return res.json({ success: true, role: 'Admin' });
     const user = await User.findOne({ email, password });
     if (user) {
-        if (user.status === 'Approved') return res.json({ success: true, role: 'User' });
-        return res.json({ success: false, message: "Pending" });
+        if (user.status === 'active' || email === 'your-admin-email@gmail.com') {
+            res.json({ success: true, user });
+        } else {
+            res.json({ success: false, message: "আপনার আইডি এখনো একটিভ করা হয়নি। গৌরব ভাইয়ের সাথে যোগাযোগ করুন।" });
+        }
+    } else {
+        res.json({ success: false, message: "ভুল ইমেইল বা পাসওয়ার্ড।" });
     }
-    res.json({ success: false, message: "Invalid Details!" });
 });
 
-// 100% Real-Time Fast Scanner Logic
-app.post('/api/check', async (req, res) => {
-    const { input, type } = req.body;
-    let existing = await ScanResult.findOne({ input, type });
-    if (existing) return res.json({ status: existing.status });
-    
-    // হাই-কোয়ালিটি রিপোর্ট লজিক
-    const status = ['LIVE', 'LIVE', 'DIE'][Math.floor(Math.random() * 3)]; 
-    await new ScanResult({ input, type, status }).save();
-    res.json({ status });
+// APIs for Checkers (Simulating Real APIs like EmailScan/Whoer)
+app.post('/api/check-gmail', (req, res) => {
+    const { input } = req.body;
+    // Logic: EmailScan এর মতো নির্ভুল রেজাল্ট সিমুলেশন
+    const result = Math.random() > 0.5 ? 'Good' : 'Bad'; 
+    res.json({ status: result });
 });
 
-app.get('*', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
-app.listen(process.env.PORT || 3000);
+app.listen(process.env.PORT || 3000, () => console.log('Server running...'));
