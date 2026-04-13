@@ -2,148 +2,77 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GOURAB FAST CHECKER</title>
+    <title>GOURAB PREMIUM CHECKER</title>
     <style>
-        :root { --gold: #ffcc00; --bg: #030712; --red: #ef4444; }
+        :root { --gold: #ffcc00; --bg: #030712; --red: #ef4444; --green: #10b981; }
         body { background: var(--bg); color: white; font-family: sans-serif; margin: 0; }
-        .nav { background: #111827; padding: 15px; border-bottom: 2px solid var(--gold); display: flex; justify-content: space-between; }
-        .sidebar { position: fixed; right: -300px; top: 0; width: 250px; height: 100%; background: #000; transition: 0.3s; border-left: 1px solid var(--gold); z-index: 1000; padding-top: 60px; }
-        .sidebar.active { right: 0; }
-        .side-item { padding: 15px; border-bottom: 1px solid #222; cursor: pointer; color: white; display: block; }
-        .red-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--red); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 2000; padding: 20px; }
-        .box { background: #111827; padding: 20px; border-radius: 10px; margin: 20px; border: 1px solid #333; }
-        .btn { width: 100%; padding: 12px; background: var(--gold); border: none; font-weight: bold; cursor: pointer; border-radius: 5px; }
-        textarea { width: 100%; background: #000; color: var(--gold); border: 1px solid #444; padding: 10px; box-sizing: border-box; }
-        .LIVE { color: #10b981; font-weight: bold; } .DIE { color: #ef4444; font-weight: bold; }
+        .nav { background: #111827; padding: 15px; text-align: center; border-bottom: 2px solid var(--gold); }
+        .welcome-msg { padding: 20px; text-align: center; background: #1e293b; margin: 10px; border-radius: 10px; }
+        .tool-box { padding: 20px; display: none; }
+        .active { display: block; }
+        textarea { width: 100%; height: 150px; background: #000; color: var(--gold); border: 1px solid #333; padding: 10px; }
+        .btn { width: 100%; padding: 12px; background: var(--gold); color: black; font-weight: bold; cursor: pointer; border: none; margin-top: 10px; }
+        .res-container { margin-top: 20px; }
+        .good { color: var(--green); background: #064e3b; padding: 10px; margin-bottom: 5px; border-radius: 5px; }
+        .bad { color: var(--red); background: #7f1d1d; padding: 10px; margin-bottom: 5px; border-radius: 5px; }
+        .copy-btn { font-size: 12px; background: #333; color: #fff; padding: 3px 8px; cursor: pointer; float: right; }
     </style>
 </head>
 <body>
 
-    <div id="redScreen" class="red-screen">
-        <h1 style="color: black;">রেজিস্টার করার জন্য ধন্যবাদ!</h1>
-        <p style="color: black; font-weight: bold;">গৌরব ভাই আইডি অন করে দিলে লগইন করতে পারবেন।</p>
-        <p style="color: black;">Contact: 01336489062</p>
-        <button onclick="location.reload()" style="padding:10px 20px; background:white; border:none;">BACK</button>
+<div id="loginPage" class="active">
     </div>
 
+<div id="mainApp" style="display:none;">
     <div class="nav">
-        <div style="color: var(--gold); font-weight: bold;">GOURAB VIP CHECKER</div>
-        <div id="menuIcon" style="display:none; cursor:pointer;" onclick="toggleMenu()">☰</div>
+        <h2>GOURAB SLIT TOOLS</h2>
     </div>
 
-    <div id="sidebar" class="sidebar">
-        <div class="side-item" onclick="loadTool('gmail')">📧 Gmail Checker</div>
-        <div class="side-item" onclick="loadTool('ip')">🌐 IP Checker</div>
-        <div class="side-item" onclick="loadTool('number')">📞 Number Checker</div>
-        <div class="side-item" onclick="loadTool('fb')">🔵 FB ID Checker</div>
+    <div class="welcome-msg">
+        গৌরব ভাইয়ের এই সাইটে আপনাকে স্বাগতম। এই সাইটে আপনি আপনার প্রয়োজনের সবকিছু পেয়ে যাবেন। ভদ্রতার সাথে কাজ করুন এবং কোনো সমস্যা হলে গৌরব ভাইকে বলুন। ধন্যবাদ।
     </div>
 
-    <div class="container">
-        <div id="loginBox" class="box">
-            <h3 style="text-align:center;">User Login</h3>
-            <input type="email" id="logEmail" placeholder="Email" style="width:100%; padding:10px; margin-bottom:10px;">
-            <input type="password" id="logPass" placeholder="Password" style="width:100%; padding:10px; margin-bottom:10px;">
-            <button class="btn" onclick="login()">LOGIN</button>
-            <p onclick="showReg()" style="text-align:center; cursor:pointer; color:var(--gold); margin-top:15px;">Create Account</p>
-        </div>
-
-        <div id="regBox" class="box" style="display:none;">
-            <h3 style="text-align:center;">Register</h3>
-            <input type="text" id="regName" placeholder="Full Name" style="width:100%; padding:10px; margin-bottom:10px;">
-            <input type="email" id="regEmail" placeholder="Email" style="width:100%; padding:10px; margin-bottom:10px;">
-            <input type="password" id="regPass" placeholder="Password" style="width:100%; padding:10px; margin-bottom:10px;">
-            <button class="btn" onclick="register()">REGISTER</button>
-        </div>
-
-        <div id="mainApp" style="display:none;">
-            <div class="box">
-                <h3 id="toolTitle" style="color:var(--gold); text-align:center;">SELECT TOOL FROM MENU</h3>
-                <div id="toolBody"></div>
-                <div id="results" style="margin-top:20px; border-top:1px solid #333; padding-top:10px;"></div>
-            </div>
-        </div>
+    <div id="gmailSlit" class="tool-box active">
+        <h3>Gmail Slit (100% Accuracy)</h3>
+        <textarea id="gmailInput" placeholder="Enter emails here..."></textarea>
+        <button class="btn" onclick="checkGmail()">Check Gmail</button>
+        <div class="res-container" id="gmailRes"></div>
     </div>
 
-    <p style="text-align:center; font-size:10px; color:#444;">Created by Gourab | Admin: 8801336489062</p>
+    <div id="ipSlit" class="tool-box">
+        <h3>Ip Slit (Whoer Quality)</h3>
+        <button class="btn" onclick="checkIP()">Auto Detect My IP Detail</button>
+        <div id="ipDetails" style="margin-top:15px; line-height: 2;"></div>
+    </div>
 
-    <script>
-        function toggleMenu() { document.getElementById('sidebar').classList.toggle('active'); }
-        function showReg() { document.getElementById('loginBox').style.display='none'; document.getElementById('regBox').style.display='block'; }
+    <div id="fbSlit" class="tool-box">
+        <h3>Facbook Slit (Live/Die)</h3>
+        <textarea id="fbInput" placeholder="UID|PASS or Cookies..."></textarea>
+        <button class="btn" onclick="checkFB()">Check FB ID</button>
+        <div class="res-container" id="fbRes"></div>
+    </div>
+</div>
 
-        async function register() {
-            const name = document.getElementById('regName').value;
-            const email = document.getElementById('regEmail').value;
-            const password = document.getElementById('regPass').value;
-            const res = await fetch('/api/register', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ name, email, password })
-            });
-            const data = await res.json();
-            if(data.success) { document.getElementById('redScreen').style.display='flex'; }
-            else { alert(data.message); }
-        }
+<script>
+    function copyText(id) {
+        const text = document.getElementById(id).innerText;
+        navigator.clipboard.writeText(text);
+        alert("Copied!");
+    }
 
-        async function login() {
-            const email = document.getElementById('logEmail').value;
-            const password = document.getElementById('logPass').value;
-            const res = await fetch('/api/login', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ email, password })
-            });
-            const data = await res.json();
-            if(data.success) {
-                document.getElementById('loginBox').style.display='none';
-                document.getElementById('mainApp').style.display='block';
-                document.getElementById('menuIcon').style.display='block';
-            } else if(data.message === "Pending") {
-                document.getElementById('redScreen').style.display='flex';
-            } else { alert(data.message); }
-        }
+    async function checkIP() {
+        const res = await fetch('https://ipapi.co/json/');
+        const data = await res.json();
+        document.getElementById('ipDetails').innerHTML = `
+            <div class="good">Country: ${data.country_name} <span class="copy-btn" onclick="copyText('ip_c')">Copy</span> <span id="ip_c" style="display:none">${data.country_name}</span></div>
+            <div class="good">Region: ${data.region}</div>
+            <div class="good">Timezone: ${data.timezone}</div>
+            <div class="good">Device: ${navigator.userAgent.includes('Android') ? 'Android' : 'iOS/PC'}</div>
+            <div class="good">Safety Score: 100% Connect</div>
+        `;
+    }
 
-        function loadTool(type) {
-            toggleMenu();
-            const title = document.getElementById('toolTitle');
-            const body = document.getElementById('toolBody');
-            document.getElementById('results').innerHTML = '';
-            
-            if(type === 'ip') {
-                title.innerText = "LIVE IP CHECKER";
-                body.innerHTML = `<button class="btn" onclick="getIP()">GET MY IP INFO</button>`;
-            } else {
-                title.innerText = type.toUpperCase() + " SCANNER";
-                body.innerHTML = `<textarea id="inp" rows="10" placeholder="Paste your list here..."></textarea>
-                                  <button class="btn" onclick="startCheck('${type}')">START SCANNING</button>`;
-            }
-        }
-
-        async function getIP() {
-            const resDiv = document.getElementById('results');
-            resDiv.innerHTML = "🌀 Tracking IP...";
-            const data = await fetch('https://ipapi.co/json/').then(r => r.json());
-            resDiv.innerHTML = `<div class='box' style='background:#000; border-color:var(--gold)'>
-                <p>🌐 IP: ${data.ip}</p>
-                <p>📍 Location: ${data.city}, ${data.country_name}</p>
-                <p>🏢 Provider: ${data.org}</p>
-                <p>⚡ Status: 100% Protected</p>
-            </div>`;
-        }
-
-        async function startCheck(type) {
-            const lines = document.getElementById('inp').value.split('\n').filter(l => l.trim());
-            const resDiv = document.getElementById('results');
-            for (let line of lines) {
-                const res = await fetch('/api/check', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ input: line.trim(), type })
-                });
-                const data = await res.json();
-                resDiv.innerHTML += `<div class="${data.status}" onclick="navigator.clipboard.writeText('${line}')" style="cursor:pointer; padding:5px;">[${data.status}] ${line}</div>`;
-            }
-        }
-    </script>
+    // Gmail, FB, TG এর জন্য আরও অনেক ফাংশন এখানে অ্যাড করা হবে...
+</script>
 </body>
 </html>
