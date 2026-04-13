@@ -2,125 +2,152 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>GOURAB CHECKER v1</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GOURAB CHECKER</title>
     <style>
-        :root { --gold: #ffcc00; --bg: #030712; --card: #111827; --green: #10b981; --red: #ef4444; }
-        body { background: var(--bg); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; }
-        .nav { background: var(--card); padding: 15px; border-bottom: 2px solid var(--gold); display: flex; justify-content: space-between; }
-        .sidebar { position: fixed; right: -300px; top: 0; width: 280px; height: 100%; background: #000; transition: 0.4s; z-index: 2000; border-left: 1px solid var(--gold); }
+        :root { --gold: #ffcc00; --bg: #030712; --red: #ef4444; }
+        body { background: var(--bg); color: white; font-family: sans-serif; margin: 0; overflow-x: hidden; }
+        .nav { background: #111827; padding: 15px; border-bottom: 2px solid var(--gold); display: flex; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+        .sidebar { position: fixed; right: -300px; top: 0; width: 250px; height: 100%; background: #000; transition: 0.3s; border-left: 1px solid var(--gold); z-index: 1000; padding-top: 60px; }
         .sidebar.active { right: 0; }
-        .box { background: var(--card); padding: 20px; border-radius: 12px; border: 1px solid #333; margin-top: 20px; }
-        .ip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .ip-item { background: #000; padding: 10px; border-radius: 8px; border: 1px solid #222; }
-        .status-LIVE { color: var(--green); }
-        .status-DIE { color: var(--red); }
-        .btn-main { width: 100%; padding: 12px; background: var(--gold); border: none; font-weight: bold; cursor: pointer; border-radius: 8px; margin-top: 10px; }
-        .copy-btn { padding: 4px 8px; background: var(--gold); color: #000; border: none; border-radius: 4px; cursor: pointer; font-size: 10px; float: right; }
+        .side-item { padding: 15px; border-bottom: 1px solid #222; cursor: pointer; display: block; text-decoration: none; color: white; }
+        .red-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--red); display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; z-index: 2000; padding: 20px; box-sizing: border-box; }
+        .box { background: #111827; padding: 20px; border-radius: 10px; margin: 20px; border: 1px solid #333; }
+        .btn { width: 100%; padding: 12px; background: var(--gold); border: none; font-weight: bold; margin-top: 10px; border-radius: 5px; cursor: pointer; }
+        textarea { width: 100%; background: #000; color: var(--gold); border: 1px solid #444; border-radius: 5px; padding: 10px; box-sizing: border-box; }
+        .live { color: #10b981; } .die { color: #ef4444; }
     </style>
 </head>
 <body>
 
+    <div id="redScreen" class="red-screen">
+        <h1>রেজিস্টার করার জন্য আপনাকে ধন্যবাদ!</h1>
+        <p>রেজিস্টার গৌরব ভাই আপনার আইডিতে চেক করে অন করে দিবে।</p>
+        <p>গৌরব ভাইকে মেসেজ দিন:</p>
+        <a href="https://t.me/8801336489062" style="color: black; font-weight: bold;">Telegram: 01336489062</a><br>
+        <button onclick="location.reload()" style="padding:10px 20px; margin-top:20px;">Back to Login</button>
+    </div>
+
     <div class="nav">
-        <div style="color: var(--gold); font-weight: bold; font-size: 20px;">GOURAB CHECKER v1</div>
-        <div id="menuIcon" onclick="toggleMenu()" style="cursor:pointer; font-size: 24px; display:none;">☰</div>
+        <div style="color: var(--gold); font-weight: bold;">GOURAB CHECKER</div>
+        <div id="menuIcon" style="display:none; cursor:pointer;" onclick="toggleMenu()">☰</div>
     </div>
 
     <div id="sidebar" class="sidebar">
-        <div style="text-align:right; padding:15px; font-size:30px; color:var(--gold); cursor:pointer;" onclick="toggleMenu()">×</div>
-        <a href="#" onclick="loadTool('gmail')" style="display:block; padding:15px; color:white; text-decoration:none;">📧 Gmail Slit</a>
-        <a href="#" onclick="loadTool('ip')" style="display:block; padding:15px; color:white; text-decoration:none;">🌐 Ip Slit</a>
-        <a href="#" onclick="loadTool('fb')" style="display:block; padding:15px; color:white; text-decoration:none;">🔵 Facebook Slit</a>
-        <a href="#" onclick="loadTool('tg')" style="display:block; padding:15px; color:white; text-decoration:none;">✈️ Tg Slit</a>
+        <div class="side-item" onclick="loadTool('gmail')">📧 Gmail Checker</div>
+        <div class="side-item" onclick="loadTool('ip')">🌐 IP Checker (Whoer)</div>
+        <div class="side-item" onclick="loadTool('number')">📞 Number Checker</div>
+        <div class="side-item" onclick="loadTool('fb')">🔵 FB ID Checker</div>
+        <div class="side-item" style="color:var(--gold)">Admin: 01336489062</div>
     </div>
 
-    <div class="container" style="padding: 20px; max-width: 800px; margin: auto;">
-        <div id="welcomeScreen" class="box" style="display:none; text-align:center;">
-            <h2 style="color:var(--gold);">স্বাগতম!</h2>
-            <p>গৌরব ভাইয়ের এই সাইটে আপনাকে স্বাগতম। ভদ্রতার সাথে কাজ করুন।</p>
-            <button class="btn-main" onclick="openApp()">কাজ শুরু করুন</button>
+    <div class="container">
+        <div id="loginBox" class="box">
+            <h3 style="text-align:center;">User Login</h3>
+            <input type="email" id="logEmail" placeholder="Email" style="width:100%; padding:10px; margin-bottom:10px;">
+            <input type="password" id="logPass" placeholder="Password" style="width:100%; padding:10px; margin-bottom:10px;">
+            <button class="btn" onclick="login()">Login</button>
+            <p onclick="showReg()" style="text-align:center; font-size:12px; cursor:pointer; margin-top:15px;">Create Account</p>
+        </div>
+
+        <div id="regBox" class="box" style="display:none;">
+            <h3 style="text-align:center;">Create Account</h3>
+            <input type="text" id="regName" placeholder="Full Name" style="width:100%; padding:10px; margin-bottom:10px;">
+            <input type="email" id="regEmail" placeholder="Email" style="width:100%; padding:10px; margin-bottom:10px;">
+            <input type="password" id="regPass" placeholder="Password" style="width:100%; padding:10px; margin-bottom:10px;">
+            <button class="btn" onclick="register()">Register</button>
         </div>
 
         <div id="mainApp" style="display:none;">
             <div class="box">
-                <h3 id="toolTitle" style="color:var(--gold);">Select Tool</h3>
+                <h3 id="toolTitle" style="color:var(--gold);">WELCOME GOURAB CHECKER</h3>
                 <div id="toolBody"></div>
                 <div id="results" style="margin-top:20px;"></div>
-                <div id="copyPanel" style="display:none; margin-top:10px; gap:5px;">
-                    <button class="btn-main" style="background:var(--green);" onclick="copy('LIVE')">Copy Good</button>
-                    <button class="btn-main" style="background:var(--red);" onclick="copy('DIE')">Copy Bad</button>
-                </div>
             </div>
         </div>
     </div>
 
+    <p style="text-align:center; font-size:10px; color:#555;">Created by Gourab | Admin ID: 8801336489062</p>
+
     <script>
-        let lastScan = [];
         function toggleMenu() { document.getElementById('sidebar').classList.toggle('active'); }
-        function openApp() { document.getElementById('welcomeScreen').style.display = 'none'; document.getElementById('mainApp').style.display = 'block'; }
+        function showReg() { document.getElementById('loginBox').style.display='none'; document.getElementById('regBox').style.display='block'; }
 
-        async function loadTool(name) {
-            const body = document.getElementById('toolBody');
-            const res = document.getElementById('results');
-            document.getElementById('copyPanel').style.display = 'none';
+        async function register() {
+            const name = document.getElementById('regName').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPass').value;
+            const res = await fetch('/api/register', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ name, email, password })
+            });
+            const data = await res.json();
+            if(data.success) { document.getElementById('redScreen').style.display='flex'; }
+            else { alert(data.message); }
+        }
+
+        async function login() {
+            const email = document.getElementById('logEmail').value;
+            const password = document.getElementById('logPass').value;
+            const res = await fetch('/api/login', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ email, password })
+            });
+            const data = await res.json();
+            if(data.success) {
+                document.getElementById('loginBox').style.display='none';
+                document.getElementById('mainApp').style.display='block';
+                document.getElementById('menuIcon').style.display='block';
+            } else if(data.message === "Pending") {
+                document.getElementById('redScreen').style.display='flex';
+            } else { alert(data.message); }
+        }
+
+        function loadTool(type) {
             toggleMenu();
+            const title = document.getElementById('toolTitle');
+            const body = document.getElementById('toolBody');
+            document.getElementById('results').innerHTML = '';
 
-            if (name === 'ip') {
-                document.getElementById('toolTitle').innerText = "IP SLIT (WHOER)";
-                body.innerHTML = `<button class="btn-main" onclick="fetchWhoer()">Reconnect & Check IP</button>`;
-                res.innerHTML = '';
+            if(type === 'ip') {
+                title.innerText = "IP CHECKER (WHOER STYLE)";
+                body.innerHTML = `<button class="btn" onclick="getIP()">Check Live IP & Speed</button>`;
             } else {
-                document.getElementById('toolTitle').innerText = name.toUpperCase() + " SLIT";
-                body.innerHTML = `<textarea id="inp" rows="8" style="width:100%;" placeholder="Paste List..."></textarea>
-                <button class="btn-main" onclick="startCheck('${name}')">Start 100% Pure Check</button>`;
-                res.innerHTML = '';
+                title.innerText = type.toUpperCase() + " CHECKER";
+                body.innerHTML = `<textarea id="inp" rows="8" placeholder="Format: Data|Pass or List..."></textarea>
+                                  <button class="btn" onclick="startCheck('${type}')">Start Super Scan</button>`;
             }
         }
 
-        async function fetchWhoer() {
-            const res = document.getElementById('results');
-            res.innerHTML = "🌀 Connecting to Server...";
+        async function getIP() {
+            const resDiv = document.getElementById('results');
+            resDiv.innerHTML = "🌀 Reconnecting...";
             const data = await fetch('https://ipapi.co/json/').then(r => r.json());
-            const now = new Date();
-            res.innerHTML = `
-                <div class="ip-grid">
-                    <div class="ip-item">Country: ${data.country_name} (${data.country_code}) <button class="copy-btn" onclick="copyTxt('${data.country_name}')">Copy</button></div>
-                    <div class="ip-item">Region: ${data.region} <button class="copy-btn" onclick="copyTxt('${data.region}')">Copy</button></div>
-                    <div class="ip-item">Device: ${navigator.userAgent.includes('Android') ? 'Android' : 'iOS'}</div>
-                    <div class="ip-item">Time: ${now.toLocaleTimeString()}</div>
-                    <div class="ip-item">VPN/IP: ${data.org.includes('VPN') ? 'YES' : 'NO'}</div>
-                    <div class="ip-item">Safety: 100% Secure ✅</div>
-                </div>
-            `;
+            resDiv.innerHTML = `<div class='box' style='background:#000'>
+                <p>🌐 IP: ${data.ip}</p>
+                <p>📍 Country: ${data.country_name} ${data.country_code}</p>
+                <p>🏙️ Region: ${data.region}</p>
+                <p>🏢 ISP: ${data.org}</p>
+                <p>⚡ Net Speed: Fast Connection</p>
+                <p>🛡️ Proxy: No detected</p>
+            </div>`;
         }
 
         async function startCheck(type) {
             const lines = document.getElementById('inp').value.split('\n').filter(l => l.trim());
             const resDiv = document.getElementById('results');
-            resDiv.innerHTML = "🚀 Scanning...";
-            lastScan = [];
-
             for (let line of lines) {
-                const response = await fetch('/api/check', {
+                const res = await fetch('/api/check', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ input: line.trim(), type: type })
+                    body: JSON.stringify({ input: line.trim(), type })
                 });
-                const data = await response.json();
-                lastScan.push({ input: line.trim(), status: data.status });
-                resDiv.innerHTML += `<div class="status-${data.status}">[${data.status}] ${line}</div>`;
+                const data = await res.json();
+                resDiv.innerHTML += `<div class="${data.status.toLowerCase()}" onclick="navigator.clipboard.writeText('${line}')">[${data.status}] ${line}</div>`;
             }
-            document.getElementById('copyPanel').style.display = 'flex';
         }
-
-        function copy(s) {
-            const list = lastScan.filter(r => r.status === s).map(r => r.input).join('\n');
-            navigator.clipboard.writeText(list);
-            alert(s + " List Copied!");
-        }
-
-        function copyTxt(t) { navigator.clipboard.writeText(t); alert("Copied!"); }
-
-        window.onload = () => { if(localStorage.getItem('role')) { document.getElementById('welcomeScreen').style.display = 'block'; document.getElementById('menuIcon').style.display = 'block'; } };
     </script>
 </body>
 </html>
