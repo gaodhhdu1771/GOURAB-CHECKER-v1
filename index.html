@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GOURAB CHECKER v1</title>
+    <style>
+        :root { --gold: #ffcc00; --bg: #030712; --card: #111827; --green: #10b981; --red: #ef4444; }
+        body { background: var(--bg); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; }
+        .nav { background: var(--card); padding: 15px; border-bottom: 2px solid var(--gold); display: flex; justify-content: space-between; }
+        .sidebar { position: fixed; right: -300px; top: 0; width: 280px; height: 100%; background: #000; transition: 0.4s; z-index: 2000; border-left: 1px solid var(--gold); }
+        .sidebar.active { right: 0; }
+        .box { background: var(--card); padding: 20px; border-radius: 12px; border: 1px solid #333; margin-top: 20px; }
+        .ip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .ip-item { background: #000; padding: 10px; border-radius: 8px; border: 1px solid #222; }
+        .status-LIVE { color: var(--green); }
+        .status-DIE { color: var(--red); }
+        .btn-main { width: 100%; padding: 12px; background: var(--gold); border: none; font-weight: bold; cursor: pointer; border-radius: 8px; margin-top: 10px; }
+        .copy-btn { padding: 4px 8px; background: var(--gold); color: #000; border: none; border-radius: 4px; cursor: pointer; font-size: 10px; float: right; }
+    </style>
+</head>
+<body>
+
+    <div class="nav">
+        <div style="color: var(--gold); font-weight: bold; font-size: 20px;">GOURAB CHECKER v1</div>
+        <div id="menuIcon" onclick="toggleMenu()" style="cursor:pointer; font-size: 24px; display:none;">☰</div>
+    </div>
+
+    <div id="sidebar" class="sidebar">
+        <div style="text-align:right; padding:15px; font-size:30px; color:var(--gold); cursor:pointer;" onclick="toggleMenu()">×</div>
+        <a href="#" onclick="loadTool('gmail')" style="display:block; padding:15px; color:white; text-decoration:none;">📧 Gmail Slit</a>
+        <a href="#" onclick="loadTool('ip')" style="display:block; padding:15px; color:white; text-decoration:none;">🌐 Ip Slit</a>
+        <a href="#" onclick="loadTool('fb')" style="display:block; padding:15px; color:white; text-decoration:none;">🔵 Facebook Slit</a>
+        <a href="#" onclick="loadTool('tg')" style="display:block; padding:15px; color:white; text-decoration:none;">✈️ Tg Slit</a>
+    </div>
+
+    <div class="container" style="padding: 20px; max-width: 800px; margin: auto;">
+        <div id="welcomeScreen" class="box" style="display:none; text-align:center;">
+            <h2 style="color:var(--gold);">স্বাগতম!</h2>
+            <p>গৌরব ভাইয়ের এই সাইটে আপনাকে স্বাগতম। ভদ্রতার সাথে কাজ করুন।</p>
+            <button class="btn-main" onclick="openApp()">কাজ শুরু করুন</button>
+        </div>
+
+        <div id="mainApp" style="display:none;">
+            <div class="box">
+                <h3 id="toolTitle" style="color:var(--gold);">Select Tool</h3>
+                <div id="toolBody"></div>
+                <div id="results" style="margin-top:20px;"></div>
+                <div id="copyPanel" style="display:none; margin-top:10px; gap:5px;">
+                    <button class="btn-main" style="background:var(--green);" onclick="copy('LIVE')">Copy Good</button>
+                    <button class="btn-main" style="background:var(--red);" onclick="copy('DIE')">Copy Bad</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let lastScan = [];
+        function toggleMenu() { document.getElementById('sidebar').classList.toggle('active'); }
+        function openApp() { document.getElementById('welcomeScreen').style.display = 'none'; document.getElementById('mainApp').style.display = 'block'; }
+
+        async function loadTool(name) {
+            const body = document.getElementById('toolBody');
+            const res = document.getElementById('results');
+            document.getElementById('copyPanel').style.display = 'none';
+            toggleMenu();
+
+            if (name === 'ip') {
+                document.getElementById('toolTitle').innerText = "IP SLIT (WHOER)";
+                body.innerHTML = `<button class="btn-main" onclick="fetchWhoer()">Reconnect & Check IP</button>`;
+                res.innerHTML = '';
+            } else {
+                document.getElementById('toolTitle').innerText = name.toUpperCase() + " SLIT";
+                body.innerHTML = `<textarea id="inp" rows="8" style="width:100%;" placeholder="Paste List..."></textarea>
+                <button class="btn-main" onclick="startCheck('${name}')">Start 100% Pure Check</button>`;
+                res.innerHTML = '';
+            }
+        }
+
+        async function fetchWhoer() {
+            const res = document.getElementById('results');
+            res.innerHTML = "🌀 Connecting to Server...";
+            const data = await fetch('https://ipapi.co/json/').then(r => r.json());
+            const now = new Date();
+            res.innerHTML = `
+                <div class="ip-grid">
+                    <div class="ip-item">Country: ${data.country_name} (${data.country_code}) <button class="copy-btn" onclick="copyTxt('${data.country_name}')">Copy</button></div>
+                    <div class="ip-item">Region: ${data.region} <button class="copy-btn" onclick="copyTxt('${data.region}')">Copy</button></div>
+                    <div class="ip-item">Device: ${navigator.userAgent.includes('Android') ? 'Android' : 'iOS'}</div>
+                    <div class="ip-item">Time: ${now.toLocaleTimeString()}</div>
+                    <div class="ip-item">VPN/IP: ${data.org.includes('VPN') ? 'YES' : 'NO'}</div>
+                    <div class="ip-item">Safety: 100% Secure ✅</div>
+                </div>
+            `;
+        }
+
+        async function startCheck(type) {
+            const lines = document.getElementById('inp').value.split('\n').filter(l => l.trim());
+            const resDiv = document.getElementById('results');
+            resDiv.innerHTML = "🚀 Scanning...";
+            lastScan = [];
+
+            for (let line of lines) {
+                const response = await fetch('/api/check', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ input: line.trim(), type: type })
+                });
+                const data = await response.json();
+                lastScan.push({ input: line.trim(), status: data.status });
+                resDiv.innerHTML += `<div class="status-${data.status}">[${data.status}] ${line}</div>`;
+            }
+            document.getElementById('copyPanel').style.display = 'flex';
+        }
+
+        function copy(s) {
+            const list = lastScan.filter(r => r.status === s).map(r => r.input).join('\n');
+            navigator.clipboard.writeText(list);
+            alert(s + " List Copied!");
+        }
+
+        function copyTxt(t) { navigator.clipboard.writeText(t); alert("Copied!"); }
+
+        window.onload = () => { if(localStorage.getItem('role')) { document.getElementById('welcomeScreen').style.display = 'block'; document.getElementById('menuIcon').style.display = 'block'; } };
+    </script>
+</body>
+</html>
