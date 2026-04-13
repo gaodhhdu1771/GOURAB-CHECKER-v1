@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GOURAB CHECKER</title>
+    <title>GOURAB FAST CHECKER</title>
     <style>
         :root { --gold: #ffcc00; --bg: #030712; --red: #ef4444; }
         body { background: var(--bg); color: white; font-family: sans-serif; margin: 0; }
-        .nav { background: #111827; padding: 15px; border-bottom: 2px solid var(--gold); display: flex; justify-content: space-between; position: sticky; top: 0; }
+        .nav { background: #111827; padding: 15px; border-bottom: 2px solid var(--gold); display: flex; justify-content: space-between; }
         .sidebar { position: fixed; right: -300px; top: 0; width: 250px; height: 100%; background: #000; transition: 0.3s; border-left: 1px solid var(--gold); z-index: 1000; padding-top: 60px; }
         .sidebar.active { right: 0; }
-        .side-item { padding: 15px; border-bottom: 1px solid #222; cursor: pointer; color: white; display: block; text-decoration: none; }
-        .red-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--red); display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; z-index: 2000; padding: 20px; box-sizing: border-box; }
+        .side-item { padding: 15px; border-bottom: 1px solid #222; cursor: pointer; color: white; display: block; }
+        .red-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--red); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 2000; padding: 20px; }
         .box { background: #111827; padding: 20px; border-radius: 10px; margin: 20px; border: 1px solid #333; }
-        .btn { width: 100%; padding: 12px; background: var(--gold); border: none; font-weight: bold; margin-top: 10px; border-radius: 5px; cursor: pointer; }
+        .btn { width: 100%; padding: 12px; background: var(--gold); border: none; font-weight: bold; cursor: pointer; border-radius: 5px; }
         textarea { width: 100%; background: #000; color: var(--gold); border: 1px solid #444; padding: 10px; box-sizing: border-box; }
         .LIVE { color: #10b981; font-weight: bold; } .DIE { color: #ef4444; font-weight: bold; }
     </style>
@@ -21,14 +21,14 @@
 <body>
 
     <div id="redScreen" class="red-screen">
-        <h1>রেজিস্টার করার জন্য আপনাকে ধন্যবাদ!</h1>
-        <p>গৌরব ভাই আপনার আইডি চেক করে অন করে দিবে।</p>
-        <p>Telegram: 01336489062</p>
-        <button onclick="location.reload()" style="padding:10px 20px; margin-top:20px;">ফিরে যান</button>
+        <h1 style="color: black;">রেজিস্টার করার জন্য ধন্যবাদ!</h1>
+        <p style="color: black; font-weight: bold;">গৌরব ভাই আইডি অন করে দিলে লগইন করতে পারবেন।</p>
+        <p style="color: black;">Contact: 01336489062</p>
+        <button onclick="location.reload()" style="padding:10px 20px; background:white; border:none;">BACK</button>
     </div>
 
     <div class="nav">
-        <div style="color: var(--gold); font-weight: bold;">GOURAB CHECKER</div>
+        <div style="color: var(--gold); font-weight: bold;">GOURAB VIP CHECKER</div>
         <div id="menuIcon" style="display:none; cursor:pointer;" onclick="toggleMenu()">☰</div>
     </div>
 
@@ -44,26 +44,28 @@
             <h3 style="text-align:center;">User Login</h3>
             <input type="email" id="logEmail" placeholder="Email" style="width:100%; padding:10px; margin-bottom:10px;">
             <input type="password" id="logPass" placeholder="Password" style="width:100%; padding:10px; margin-bottom:10px;">
-            <button class="btn" onclick="login()">Login</button>
-            <p onclick="showReg()" style="text-align:center; font-size:12px; cursor:pointer; margin-top:15px; color:var(--gold);">Create New Account</p>
+            <button class="btn" onclick="login()">LOGIN</button>
+            <p onclick="showReg()" style="text-align:center; cursor:pointer; color:var(--gold); margin-top:15px;">Create Account</p>
         </div>
 
         <div id="regBox" class="box" style="display:none;">
-            <h3 style="text-align:center;">Registration</h3>
+            <h3 style="text-align:center;">Register</h3>
             <input type="text" id="regName" placeholder="Full Name" style="width:100%; padding:10px; margin-bottom:10px;">
             <input type="email" id="regEmail" placeholder="Email" style="width:100%; padding:10px; margin-bottom:10px;">
             <input type="password" id="regPass" placeholder="Password" style="width:100%; padding:10px; margin-bottom:10px;">
-            <button class="btn" onclick="register()">Register</button>
+            <button class="btn" onclick="register()">REGISTER</button>
         </div>
 
         <div id="mainApp" style="display:none;">
             <div class="box">
-                <h3 id="toolTitle" style="color:var(--gold);">WELCOME</h3>
+                <h3 id="toolTitle" style="color:var(--gold); text-align:center;">SELECT TOOL FROM MENU</h3>
                 <div id="toolBody"></div>
-                <div id="results" style="margin-top:20px; font-family: monospace;"></div>
+                <div id="results" style="margin-top:20px; border-top:1px solid #333; padding-top:10px;"></div>
             </div>
         </div>
     </div>
+
+    <p style="text-align:center; font-size:10px; color:#444;">Created by Gourab | Admin: 8801336489062</p>
 
     <script>
         function toggleMenu() { document.getElementById('sidebar').classList.toggle('active'); }
@@ -108,24 +110,24 @@
             document.getElementById('results').innerHTML = '';
             
             if(type === 'ip') {
-                title.innerText = "IP CHECKER (WHOER)";
-                body.innerHTML = `<button class="btn" onclick="getIP()">Check Live IP</button>`;
+                title.innerText = "LIVE IP CHECKER";
+                body.innerHTML = `<button class="btn" onclick="getIP()">GET MY IP INFO</button>`;
             } else {
-                title.innerText = type.toUpperCase() + " CHECKER";
-                body.innerHTML = `<textarea id="inp" rows="8" placeholder="Enter data..."></textarea>
-                                  <button class="btn" onclick="startCheck('${type}')">Start Scanning</button>`;
+                title.innerText = type.toUpperCase() + " SCANNER";
+                body.innerHTML = `<textarea id="inp" rows="10" placeholder="Paste your list here..."></textarea>
+                                  <button class="btn" onclick="startCheck('${type}')">START SCANNING</button>`;
             }
         }
 
         async function getIP() {
             const resDiv = document.getElementById('results');
-            resDiv.innerHTML = "🌀 Loading...";
+            resDiv.innerHTML = "🌀 Tracking IP...";
             const data = await fetch('https://ipapi.co/json/').then(r => r.json());
-            resDiv.innerHTML = `<div class='box' style='background:#000'>
+            resDiv.innerHTML = `<div class='box' style='background:#000; border-color:var(--gold)'>
                 <p>🌐 IP: ${data.ip}</p>
-                <p>📍 Country: ${data.country_name}</p>
-                <p>🏢 ISP: ${data.org}</p>
-                <p>⚡ Status: Connected</p>
+                <p>📍 Location: ${data.city}, ${data.country_name}</p>
+                <p>🏢 Provider: ${data.org}</p>
+                <p>⚡ Status: 100% Protected</p>
             </div>`;
         }
 
@@ -139,7 +141,7 @@
                     body: JSON.stringify({ input: line.trim(), type })
                 });
                 const data = await res.json();
-                resDiv.innerHTML += `<div class="${data.status}" onclick="navigator.clipboard.writeText('${line}')">[${data.status}] ${line}</div>`;
+                resDiv.innerHTML += `<div class="${data.status}" onclick="navigator.clipboard.writeText('${line}')" style="cursor:pointer; padding:5px;">[${data.status}] ${line}</div>`;
             }
         }
     </script>
