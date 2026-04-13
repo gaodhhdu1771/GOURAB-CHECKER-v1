@@ -1,22 +1,12 @@
 {
   "name": "gourab-checker-v1",
-  "version": "1.0.0",
-  "description": "Multi-Checker for Gourab",
+  "version": "1.2.0",
   "main": "server.js",
-  "scripts": {
-    "start": "node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "scripts": { "start": "node server.js" },
   "dependencies": {
     "express": "^4.18.2",
     "mongoose": "^7.5.0",
     "cors": "^2.8.5",
     "helmet": "^7.0.0"
-  },
-  "engines": {
-    "node": ">=18.x"
-  },
-  "author": "Gourab",
-  "license": "MIT"
+  }
 }
-
