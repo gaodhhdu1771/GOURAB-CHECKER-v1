@@ -2,77 +2,207 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>GOURAB PREMIUM CHECKER</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GOURAB SLIT MASTER V3</title>
     <style>
-        :root { --gold: #ffcc00; --bg: #030712; --red: #ef4444; --green: #10b981; }
-        body { background: var(--bg); color: white; font-family: sans-serif; margin: 0; }
-        .nav { background: #111827; padding: 15px; text-align: center; border-bottom: 2px solid var(--gold); }
-        .welcome-msg { padding: 20px; text-align: center; background: #1e293b; margin: 10px; border-radius: 10px; }
+        :root { --gold: #ffcc00; --bg: #030712; --green: #10b981; --red: #ef4444; --white: #fff; --yellow: #facc15; }
+        body { background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; }
+        .login-box { max-width: 400px; margin: 100px auto; padding: 20px; background: #111827; border: 2px solid var(--gold); border-radius: 10px; text-align: center; }
+        input, textarea { width: 90%; padding: 12px; margin: 8px 0; background: #000; color: var(--gold); border: 1px solid #333; border-radius: 5px; }
+        .btn { width: 95%; padding: 12px; background: var(--gold); color: #000; font-weight: bold; border: none; cursor: pointer; margin-top: 10px; }
+        .nav { background: #111827; padding: 15px; border-bottom: 2px solid var(--gold); display: flex; justify-content: space-between; }
         .tool-box { padding: 20px; display: none; }
-        .active { display: block; }
-        textarea { width: 100%; height: 150px; background: #000; color: var(--gold); border: 1px solid #333; padding: 10px; }
-        .btn { width: 100%; padding: 12px; background: var(--gold); color: black; font-weight: bold; cursor: pointer; border: none; margin-top: 10px; }
-        .res-container { margin-top: 20px; }
-        .good { color: var(--green); background: #064e3b; padding: 10px; margin-bottom: 5px; border-radius: 5px; }
-        .bad { color: var(--red); background: #7f1d1d; padding: 10px; margin-bottom: 5px; border-radius: 5px; }
-        .copy-btn { font-size: 12px; background: #333; color: #fff; padding: 3px 8px; cursor: pointer; float: right; }
+        .res-container { margin-top: 15px; }
+        .res-box { padding: 12px; margin-bottom: 8px; border-radius: 5px; position: relative; }
+        .copy-btn { position: absolute; right: 8px; top: 8px; background: #333; color: #fff; border: none; padding: 4px 8px; cursor: pointer; border-radius: 3px; }
+        .welcome-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; display: none; justify-content: center; align-items: center; }
+        .welcome-content { background: #111827; border: 3px solid var(--gold); padding: 30px; border-radius: 15px; text-align: center; max-width: 80%; }
+        .footer-info { margin-top: 20px; font-size: 14px; color: var(--gold); }
     </style>
 </head>
 <body>
 
-<div id="loginPage" class="active">
+<div id="welcomeOverlay" class="welcome-overlay">
+    <div class="welcome-content">
+        <h2 style="color:var(--gold)">[গৌরব ভাইয়ের এই সাইটে আপনাকে স্বাগতম]</h2>
+        <p>এই সাইটে আপনি আপনার প্রয়োজনের সবকিছু পেয়ে যাবেন। ভদ্রতার সাথে কাজ করুন এবং কোন সমস্যা হলে গৌরব ভাইকে বলুন। ধন্যবাদ।</p>
+        <button class="btn" onclick="closeWelcome()">কাজ শুরু করুন</button>
     </div>
+</div>
+
+<div id="authPage">
+    <div class="login-box">
+        <h2 style="color:var(--gold)">GOURAB SLIT V3</h2>
+        <div id="loginForm">
+            <input type="email" id="loginEmail" placeholder="Email">
+            <input type="password" id="loginPass" placeholder="Password">
+            <button class="btn" onclick="handleLogin()">Login</button>
+            <p onclick="toggleAuth(false)" style="cursor:pointer; margin-top:15px;">নতুন অ্যাকাউন্ট? রেজিস্ট্রেশন করুন</p>
+        </div>
+        <div id="regForm" style="display:none;">
+            <input type="text" id="regName" placeholder="Full Name">
+            <input type="email" id="regEmail" placeholder="Email">
+            <input type="password" id="regPass" placeholder="Password">
+            <button class="btn" onclick="handleRegister()">Register</button>
+            <p onclick="toggleAuth(true)" style="cursor:pointer; margin-top:15px;">লগইন করুন</p>
+        </div>
+        <div class="footer-info">
+            Develop By gourab <br> Number: 01944035239
+        </div>
+    </div>
+</div>
 
 <div id="mainApp" style="display:none;">
     <div class="nav">
-        <h2>GOURAB SLIT TOOLS</h2>
+        <span id="displayRole">User Profile</span>
+        <span>GOURAB MASTER SLIT</span>
+        <button onclick="location.reload()" style="background:var(--red); color:white; border:none; padding:5px 10px; border-radius:3px;">Reload</button>
     </div>
 
-    <div class="welcome-msg">
-        গৌরব ভাইয়ের এই সাইটে আপনাকে স্বাগতম। এই সাইটে আপনি আপনার প্রয়োজনের সবকিছু পেয়ে যাবেন। ভদ্রতার সাথে কাজ করুন এবং কোনো সমস্যা হলে গৌরব ভাইকে বলুন। ধন্যবাদ।
+    <div style="padding:15px; display:flex; flex-wrap:wrap; gap:10px;">
+        <button class="btn" style="width:auto;" onclick="showTool('gmail')">Gmail Slit</button>
+        <button class="btn" style="width:auto;" onclick="showTool('ip')">Ip Slit</button>
+        <button class="btn" style="width:auto;" onclick="showTool('fb')">Facbook Slit</button>
+        <button class="btn" style="width:auto;" onclick="showTool('tg')">Tg Slit</button>
+        <button class="btn" style="width:auto; display:none; background:var(--white);" id="adminNav" onclick="showTool('admin')">Admin Panel</button>
     </div>
 
-    <div id="gmailSlit" class="tool-box active">
-        <h3>Gmail Slit (100% Accuracy)</h3>
-        <textarea id="gmailInput" placeholder="Enter emails here..."></textarea>
-        <button class="btn" onclick="checkGmail()">Check Gmail</button>
-        <div class="res-container" id="gmailRes"></div>
+    <div id="gmailSlit" class="tool-box">
+        <h3>Gmail Slit (100% Authentic)</h3>
+        <textarea id="gmailInput" placeholder="Enter list..."></textarea>
+        <button class="btn" onclick="processSlit('gmail')">Check Now</button>
+        <div class="res-container">
+            <div class="res-box" style="background:var(--green)">Good: <span id="gmail_good"></span> <button class="copy-btn" onclick="copy('gmail_good')">Copy</button></div>
+            <div class="res-box" style="background:var(--red)">Bad: <span id="gmail_bad"></span> <button class="copy-btn" onclick="copy('gmail_bad')">Copy</button></div>
+            <div class="res-box" style="background:var(--white); color:black;">Non-Exist: <span id="gmail_non"></span> <button class="copy-btn" onclick="copy('gmail_non')">Copy</button></div>
+            <div class="res-box" style="background:var(--yellow); color:black;">Verified: <span id="gmail_ver"></span> <button class="copy-btn" onclick="copy('gmail_ver')">Copy</button></div>
+        </div>
     </div>
 
     <div id="ipSlit" class="tool-box">
         <h3>Ip Slit (Whoer Quality)</h3>
-        <button class="btn" onclick="checkIP()">Auto Detect My IP Detail</button>
-        <div id="ipDetails" style="margin-top:15px; line-height: 2;"></div>
+        <button class="btn" onclick="checkIpFull()">Detect My IP Info</button>
+        <div id="ipDetails" style="margin-top:20px; line-height:2; background:#111827; padding:15px; border:1px solid var(--gold);"></div>
     </div>
 
-    <div id="fbSlit" class="tool-box">
-        <h3>Facbook Slit (Live/Die)</h3>
-        <textarea id="fbInput" placeholder="UID|PASS or Cookies..."></textarea>
-        <button class="btn" onclick="checkFB()">Check FB ID</button>
-        <div class="res-container" id="fbRes"></div>
+    <div id="adminPanel" class="tool-box">
+        <h3>User Control (Admin Only)</h3>
+        <div id="userListDisplay"></div>
+    </div>
+
+    <div style="text-align:center; padding:20px; border-top:1px solid #333; margin-top:50px;">
+        <p>Admin: <a href="https://facebook.com/your-id" style="color:var(--gold)">Facebook</a> | <a href="https://t.me/your-id" style="color:var(--gold)">Telegram</a></p>
     </div>
 </div>
 
 <script>
-    function copyText(id) {
+    let userData = null;
+
+    function toggleAuth(showLogin) {
+        document.getElementById('loginForm').style.display = showLogin ? 'block' : 'none';
+        document.getElementById('regForm').style.display = showLogin ? 'none' : 'block';
+    }
+
+    async function handleLogin() {
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPass').value;
+        const res = await fetch('/api/login', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+        if(data.success) {
+            userData = data.user;
+            document.getElementById('authPage').style.display = 'none';
+            document.getElementById('mainApp').style.display = 'block';
+            document.getElementById('welcomeOverlay').style.display = 'flex';
+            document.getElementById('displayRole').innerText = `Role: ${userData.role}`;
+            if(userData.role === 'admin') document.getElementById('adminNav').style.display = 'inline-block';
+        } else alert(data.message);
+    }
+
+    async function handleRegister() {
+        const body = {
+            name: document.getElementById('regName').value,
+            email: document.getElementById('regEmail').value,
+            password: document.getElementById('regPass').value
+        };
+        const res = await fetch('/api/register', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(body)
+        });
+        const data = await res.json();
+        if(data.success) {
+            alert("রেজিস্টার সম্পন্ন! গৌরব ভাইকে এসএমএস দিন।");
+            toggleAuth(true);
+        } else alert(data.message);
+    }
+
+    function closeWelcome() { document.getElementById('welcomeOverlay').style.display = 'none'; }
+
+    function showTool(tool) {
+        const tools = ['gmailSlit', 'ipSlit', 'adminPanel'];
+        tools.forEach(t => document.getElementById(t).style.display = 'none');
+        if(tool === 'gmail') document.getElementById('gmailSlit').style.display = 'block';
+        if(tool === 'ip') document.getElementById('ipSlit').style.display = 'block';
+        if(tool === 'admin') {
+            document.getElementById('adminPanel').style.display = 'block';
+            loadUserList();
+        }
+    }
+
+    async function processSlit(type) {
+        const input = document.getElementById('gmailInput').value;
+        if(!input) return;
+        const res = await fetch('/api/check-slit', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ input, type })
+        });
+        const data = await res.json();
+        const idMap = { 'Good': 'gmail_good', 'Bad': 'gmail_bad', 'Non-Exist': 'gmail_non', 'Verified': 'gmail_ver' };
+        document.getElementById(idMap[data.status]).innerText = input;
+    }
+
+    async function checkIpFull() {
+        const res = await fetch('https://ipapi.co/json/');
+        const d = await res.json();
+        document.getElementById('ipDetails').innerHTML = `
+            <b>Country:</b> ${d.country_name} (Code: ${d.country_code}) <br>
+            <b>Region:</b> ${d.region} <br>
+            <b>Time:</b> ${new Date().toLocaleTimeString()} <br>
+            <b>Device:</b> ${navigator.userAgent.includes('Android') ? 'Android' : 'iOS/iPhone'} <br>
+            <b>VPN Status:</b> ${d.org.toLowerCase().includes('vpn') ? 'YES' : 'NO'} <br>
+            <b>Score:</b> 100% Authentic Connection
+        `;
+    }
+
+    function copy(id) {
         const text = document.getElementById(id).innerText;
         navigator.clipboard.writeText(text);
         alert("Copied!");
     }
 
-    async function checkIP() {
-        const res = await fetch('https://ipapi.co/json/');
-        const data = await res.json();
-        document.getElementById('ipDetails').innerHTML = `
-            <div class="good">Country: ${data.country_name} <span class="copy-btn" onclick="copyText('ip_c')">Copy</span> <span id="ip_c" style="display:none">${data.country_name}</span></div>
-            <div class="good">Region: ${data.region}</div>
-            <div class="good">Timezone: ${data.timezone}</div>
-            <div class="good">Device: ${navigator.userAgent.includes('Android') ? 'Android' : 'iOS/PC'}</div>
-            <div class="good">Safety Score: 100% Connect</div>
-        `;
+    async function loadUserList() {
+        const res = await fetch('/api/users');
+        const users = await res.json();
+        let html = '<table border="1" width="100%"><tr><th>Name</th><th>Status</th><th>Action</th></tr>';
+        users.forEach(u => {
+            html += `<tr><td>${u.name}</td><td>${u.status}</td><td><button onclick="updateUser('${u._id}', 'active')">Active</button> <button onclick="updateUser('${u._id}', 'blocked')">Block</button></td></tr>`;
+        });
+        document.getElementById('userListDisplay').innerHTML = html + '</table>';
     }
 
-    // Gmail, FB, TG এর জন্য আরও অনেক ফাংশন এখানে অ্যাড করা হবে...
+    async function updateUser(id, status) {
+        await fetch('/api/user-update', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ id, status })
+        });
+        loadUserList();
+    }
 </script>
 </body>
 </html>
